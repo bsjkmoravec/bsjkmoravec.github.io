@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://bsjkmoravec.github.io</id>
+    <title>Moravec&apos;s Musings</title>
+    <updated>2024-06-22T07:47:02.288Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://bsjkmoravec.github.io"/>
+    <link rel="self" href="https://bsjkmoravec.github.io/atom.xml"/>
+    <subtitle>阴暗四斋的胡言乱语</subtitle>
+    <logo>https://bsjkmoravec.github.io/images/avatar.png</logo>
+    <icon>https://bsjkmoravec.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2024, Moravec&apos;s Musings</rights>
+    <entry>
+        <title type="html"><![CDATA[Windows使用输入法(搜狗)快速插入zettelkasten时间戳]]></title>
+        <id>https://bsjkmoravec.github.io/post/windows-shi-yong-shu-ru-fa-sou-gou-kuai-su-cha-ru-zettelkasten-shi-jian-chuo/</id>
+        <link href="https://bsjkmoravec.github.io/post/windows-shi-yong-shu-ru-fa-sou-gou-kuai-su-cha-ru-zettelkasten-shi-jian-chuo/">
+        </link>
+        <updated>2024-06-21T06:54:21.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="需求来源">需求来源</h2>
+<p>使用zettelkasten写笔记的时候常需要添加时间戳</p>
+<h2 id="方法参考">方法参考</h2>
+<p><a href="https://www.jianshu.com/p/80bf401a97e0">如何设置sogou输入法的时间</a><br>
+本篇更类似于zettelkasten的时间戳 简书这篇的时间格式日常使用更广泛</p>
+<h2 id="步骤">步骤</h2>
+<ol>
+<li>进入自定义短语的编辑界面</li>
+<li>设定好自己需要触发的关键词缩写(例如我将&quot;时间&quot;的快捷触发设置为<code>sj</code>)</li>
+<li>时间短语处, 填入<code>#$year$month_mm$day_dd$fullhour$minute$second</code></li>
+<li>日期处, 填入<code>#$year$month_mm$day_dd</code></li>
+<li>预期:
+<ul>
+<li>敲<code>sj</code>, 出现例如<code>20240621145217</code>格式的时间戳</li>
+<li>敲<code>rq</code>, 出现<code>20240621</code>格式的日期</li>
+</ul>
+</li>
+</ol>
+<h2 id="实际效果">实际效果:</h2>
+<ul>
+<li>输入<code>sj</code>: 20240621145316 <img src="https://raw.githubusercontent.com/bsjkmoravec/Image-Hosting/main/images202406211459459.png" alt="时间" loading="lazy"></li>
+<li>输入<code>rq</code>:20240621 <img src="https://raw.githubusercontent.com/bsjkmoravec/Image-Hosting/main/images202406211459412.png" alt="日期" loading="lazy"></li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Lobehub本地部署和更新]]></title>
+        <id>https://bsjkmoravec.github.io/post/lobehub-ben-di-bu-shu/</id>
+        <link href="https://bsjkmoravec.github.io/post/lobehub-ben-di-bu-shu/">
+        </link>
+        <updated>2024-06-16T10:21:51.000Z</updated>
+        <content type="html"><![CDATA[<p>这里使用aihubmix的中转API服务</p>
+<h2 id="部署">部署</h2>
+<p>将<code>sk-xxx</code>替换为个人的API key</p>
+<pre><code>docker run -d -p 3210:3210 \
+  -e OPENAI_API_KEY=sk-xxx \
+  -e OPENAI_PROXY_URL=https://aihubmix.com/v1 \
+  -e ACCESS_CODE=lobe66 \
+  --name lobe-chat \
+  lobehub/lobe-chat
+</code></pre>
+<h3 id="注意">注意:</h3>
+<ul>
+<li>添加代理URL</li>
+<li><code>Lobehub</code>默认端口3210, 注意是否被占用</li>
+</ul>
+<h2 id="更新">更新</h2>
+<p>先执行:</p>
+<pre><code>docker stop lobe-chat
+docker rm lobe-chat
+docker pull lobehub/lobe-chat
+</code></pre>
+<p>再执行部署时步骤即可<br>
+由于本地部署使用的是Windows系统, 因此未进行自动化. 将更新自动化步骤见官方文档:<br>
+<a href="https://lobehub.com/docs/self-hosting/advanced/upstream-sync#write-automatic-update-scripts-and-configuration-files">官方文档</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[使用ffmpeg下载某些网页中的m3u8格式视频]]></title>
+        <id>https://bsjkmoravec.github.io/post/this-i-saw-this-i-experienced-this-i-know-to-be-the-truth/</id>
+        <link href="https://bsjkmoravec.github.io/post/this-i-saw-this-i-experienced-this-i-know-to-be-the-truth/">
+        </link>
+        <updated>2024-06-13T01:48:40.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="场景">场景</h2>
+<p>某些网课网页中视频播放器功能较弱, 导致视频观看体验极差, 遂想尝试下载</p>
+<h2 id="方法">方法</h2>
+<p>找到网页中需要下载的m3u8视频的URL.</p>
+<pre><code>ffmpeg -i &quot;{m3u8 URL}&quot; -c copy {output filename}
+</code></pre>
+<p>我下载为mp4格式, 因此filename那里填写的是例如<code>output.mp4</code>之类名字</p>
+<h2 id="参数解释">参数解释</h2>
+<p>询问GPT-4:</p>
+<ul>
+<li>
+<p><code>-c</code> 参数: <code>-codec</code> 的缩写，用于指定编码器（codec）。</p>
+<ul>
+<li>编码器: 用于处理音频和视频数据的模块</li>
+<li>可以分别为视频和音频指定不同的编码器，例如 <code>-c:v</code> 表示视频编码器，<code>-c:a</code> 表示音频编码器。</li>
+</ul>
+</li>
+<li>
+<p><code>copy</code> 参数: copy 是一个特殊的编码器，它表示直接复制流（stream copy），而不进行重新编码。</p>
+<ul>
+<li>表示FFmpeg不会修改音频或视频数据，只将其从一个容器格式(可以简单理解为文件格式)复制到另一个容器格式。优点是快速、无损，因未重新编码.</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Logseq css样式]]></title>
+        <id>https://bsjkmoravec.github.io/post/logseq-css-yang-shi/</id>
+        <link href="https://bsjkmoravec.github.io/post/logseq-css-yang-shi/">
+        </link>
+        <updated>2024-06-09T18:51:26.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="样式预览">样式预览</h2>
+<figure data-type="image" tabindex="1"><img src="https://raw.githubusercontent.com/bsjkmoravec/Image-Hosting/main/images202406100256233.png" alt="样式" loading="lazy"></figure>
+<h2 id="概述">概述</h2>
+<p>只修改了字体.</p>
+<ul>
+<li>简体中文: 仓耳今楷04 W04</li>
+<li>英语: Spectral</li>
+<li>代码: FiraCode Nerd Font Mono</li>
+</ul>
+<h2 id="css代码设置中编辑当前库的css">CSS代码(设置中&quot;编辑当前库的css&quot;)</h2>
+<pre><code class="language-css">:root {
+    --ct-code-font-family: 'FiraCode Nerd Font Mono';
+    --ls-font-family: 'Spectral','TsangerJinKai04', 'segoe UI Emoji', 'sarasa gothic sc', sans-serif;
+}
+
+#root&gt;div,
+html,
+body {
+    font-family: var(--ls-font-family);
+}
+
+:not(pre)&gt;code,
+.CodeMirror {
+    font-family: var(--ct-code-font-family);
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Wikipedia citation needed: 使用GPT和维基百科验证GPT或网页内容是否可信]]></title>
+        <id>https://bsjkmoravec.github.io/post/wikipedia-citation-needed/</id>
+        <link href="https://bsjkmoravec.github.io/post/wikipedia-citation-needed/">
+        </link>
+        <updated>2024-06-02T15:07:36.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="需求">需求</h2>
+<p>尽管GPT-4系列已经发布了很久, 但是在3.5上常常出现的<strong>睁眼说瞎话</strong>问题仍不可避免地存在. 这个问题可以通过免费Chrome插件Wikipedia Citation Needed得到一定程度解决.</p>
+<h2 id="安装">安装</h2>
+<p><a href="https://chromewebstore.google.com/detail/wikipedia-citation-needed/kecnjhdipdihkibljeicopdcoinghmhj">Chrome商店安装地址</a></p>
+<h2 id="使用">使用</h2>
+<p>该插件能够结合GPT和维基百科对选中的回答给出验证(没错, 使用AI验证AI; 也可验证其他网页内容)<br>
+<img src="https://raw.githubusercontent.com/bsjkmoravec/Image-Hosting/main/images202406041956257.png" alt="Citation Needed插件图片" loading="lazy"><br>
+打开插件, 插件会在 Chrome侧边栏 显示, 选中需要验证的文字后&quot;verify&quot;即可. 或者选中文字后点击右键菜单中的&quot;Wikipedia Citation Needed&quot;也可.<br>
+插件会给出结果: &quot;基本符合&quot;、&quot;未找到相关wiki/无关&quot;、&quot;不符合&quot;.<br>
+如果想进一步确认, 可以点&quot;continue reading on Wikipedia&quot;, 点击后会自动跳转到对应的维基百科文章, 用户可阅读该wiki手动验证内容.</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ 警惕成为"数字仓鼠", 避免滥收藏不处理不学习]]></title>
+        <id>https://bsjkmoravec.github.io/post/jing-ti-cheng-wei-shu-zi-cang-shu-bi-mian-lan-shou-cang-bu-chu-li-bu-xue-xi/</id>
+        <link href="https://bsjkmoravec.github.io/post/jing-ti-cheng-wei-shu-zi-cang-shu-bi-mian-lan-shou-cang-bu-chu-li-bu-xue-xi/">
+        </link>
+        <updated>2024-06-02T12:56:57.000Z</updated>
+        <content type="html"><![CDATA[<p>收藏不等于学习. 仅仅收藏是没有价值的, 只是在做知识的搬运工, 不仅会毫无所获, 还会给自己一种&quot;学了&quot;的错觉. 收藏的东西必须经过自己的消化吸收, 有自己的理解, 才有价值.</p>
+<p>为什么容易成为知识的搬运工, 容易滥收藏?  一部分原因是恣意收藏看似符合了&quot;需要学习&quot;的自我需求的期许, 另一部分是由于收藏成本的下降使收藏变得太过容易. 放在以前, 保存一篇文章可能需要购买相应纸质读物, 如今只需要点下鼠标或者按下快捷键就好, 从可能的金钱和时间成本降低到了几乎没有成本.</p>
+<p>比较合适的方法是, 鉴别什么是要收藏的内容, 并内化自己的收藏. 收藏一篇文章,先阅读, 随后以总结/提炼/评论等任意形式进行内化, 重点在于必须保证有这步内化的过程.  存入越容易, 提取(回忆/利用)越困难, 而存入越费力, 提取利用一般会更容易.  经过自己内化后的信息和收藏才会成为能带来复利的知识, 而不是收藏的垃圾箱、知识的搬运工</p>
+<p><a href="https://help.flomoapp.com/thinking/stop-fav.html">📥 为何收藏无用 | flomo 101</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA["设备驱动学习"]]></title>
+        <id>https://bsjkmoravec.github.io/post/she-bei-qu-dong-xue-xi/</id>
+        <link href="https://bsjkmoravec.github.io/post/she-bei-qu-dong-xue-xi/">
+        </link>
+        <updated>2024-06-01T05:33:25.000Z</updated>
+        <content type="html"><![CDATA[<blockquote class="twitter-tweet"><p lang="zh" dir="ltr">买一部电纸书，读完几本书后束之高阁。<br>买一台游戏机，打完几个游戏后一旁落灰。<br>写一个生词本，记录几百个单词后忘了它的存在。<br><br>总结规律：每次都是靠一个“新设备”，在想持续投入的方向推进一丁点，再停滞。真挫呀。但换个角度想想，虽然坚持不下来，但至少还多读了几本、多学了几百个词，不是吗？ <a href="https://t.co/p2Jitf2r0W">pic.twitter.com/p2Jitf2r0W</a></p>&mdash; piglei (@Piglei) <a href="https://twitter.com/Piglei/status/1796526711343141048?ref_src=twsrc%5Etfw">May 31, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>通过购买设备来驱动学习. 就是费钱了点. 每次刚买完新设备/新工具会特别有干劲. 然后三分钟热度一过, 就不怎么学了.<br>
+不过取巧了说, 这和报班学习本质是一样的——付费, 然后获得知识.<br>
+至少最终的结果是因为购买了新设备而有所学习和进步.</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[GPT-academic本地部署使用]]></title>
+        <id>https://bsjkmoravec.github.io/post/gpt-academic-ben-di-bu-shu-shi-yong/</id>
+        <link href="https://bsjkmoravec.github.io/post/gpt-academic-ben-di-bu-shu-shi-yong/">
+        </link>
+        <updated>2024-05-30T16:36:35.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="部署过程">部署过程</h2>
+<ol>
+<li>部署用的是方法一, 没有使用<code>docker</code>或者一键安装脚本.<br>
+<a href="https://github.com/binary-husky/gpt_academic?tab=readme-ov-file#%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95i%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C-windows-linux-or-macos">官方三类安装方法</a></li>
+<li>使用的API key是由第三方:<a href="https://aihubmix.com/">aihubmix</a>提供的, 而并不是OpenAI官方API, 以免封号的可能性.</li>
+<li>使用的网络工具是clash, 如果网络工具不同需要修改配置文件里proxies相关内容.</li>
+<li>按照要求安装python的requirements. 此次部署使用的anaconda. 注意的点:
+<ul>
+<li>老是容易忘<code>cd</code>进gpt_academic的目录下创建conda环境</li>
+<li>必须使用<code>anaconda prompt</code>, 因为这里能保证conda的python解释器优先级最高.</li>
+</ul>
+</li>
+<li>按照推荐, 在目录路径下创建了<code>config_private.py</code>文件. 这样更新的时候无所谓怎么倒腾, 配置都是在的.</li>
+<li>创建完<code>config_private.py</code>文件、安装完必要依赖后, 运行<code>python main.py</code>即可.<br>
+<br/></li>
+</ol>
+<h2 id="参考配置">参考配置</h2>
+<p>以下是创建的<code>config_private.py</code>配置文件</p>
+<pre><code class="language-python">	  API_KEY = &quot;sk-**(中转API key)&quot;
+	  
+	  USE_PROXY = True
+	  
+	  if USE_PROXY:
+	      proxies = {
+	          &quot;http&quot;:  &quot;http://127.0.0.1:7890&quot;,
+	          &quot;https&quot;: &quot;http://127.0.0.1:7890&quot;,
+	      }
+	  else:
+	      proxies = None
+	  
+	  LLM_MODEL = &quot;gpt-4o&quot;
+	  
+	  API_URL_REDIRECT = {&quot;https://api.openai.com/v1/chat/completions&quot;: &quot;https://aihubmix.com/v1/chat/completions&quot;}
+	  
+	  DEFAULT_WORKER_NUM = 30
+</code></pre>
+<h2 id="后续运行">后续运行</h2>
+<p>使用 <code>anaconda prompt</code>并切换到gpt_academic对应的<code>python</code>运行环境后 <code>python main.py</code>即可</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA["There's no audience"]]></title>
+        <id>https://bsjkmoravec.github.io/post/theres-no-audience/</id>
+        <link href="https://bsjkmoravec.github.io/post/theres-no-audience/">
+        </link>
+        <updated>2024-05-30T03:26:05.000Z</updated>
+        <content type="html"><![CDATA[<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Years ago, when I was in my 20s, a bold and artistically daring older friend who has since passed on gave me what I often think was the best advice I have ever gotten. I was worrying what &#39;people would think&#39; of a decision I had made, and she said, &quot;Amanda, There is no audience.&quot;</p>&mdash; Amanda Fortini (@amandafortini) <a href="https://twitter.com/amandafortini/status/1769868640789106951?ref_src=twsrc%5Etfw">March 18, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<br/>
+<p>no audience有点夸张了. 不过称No memory也许是可以的. 平时担心&quot;丢面子&quot;的事情, 大可以完全不在意他人看法, 自顾自地做.</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[关于本站]]></title>
+        <id>https://bsjkmoravec.github.io/post/about/</id>
+        <link href="https://bsjkmoravec.github.io/post/about/">
+        </link>
+        <updated>2024-05-27T12:02:18.000Z</updated>
+        <content type="html"><![CDATA[<p>包括但不限于本人的阴暗乱弹和学习记录.</p>
+]]></content>
+    </entry>
+</feed>

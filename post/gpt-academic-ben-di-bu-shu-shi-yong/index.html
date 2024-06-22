@@ -1,0 +1,224 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GPT-academic本地部署使用 | Moravec&#39;s Musings</title>
+<link rel="shortcut icon" href="https://bsjkmoravec.github.io/favicon.ico?v=1719042420716">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://bsjkmoravec.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="GPT-academic本地部署使用 | Moravec&#39;s Musings - Atom Feed" href="https://bsjkmoravec.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="部署过程
+
+部署用的是方法一, 没有使用docker或者一键安装脚本.
+官方三类安装方法
+使用的API key是由第三方:aihubmix提供的, 而并不是OpenAI官方API, 以免封号的可能性.
+使用的网络工具是clash, 如果网络..." />
+    <meta name="keywords" content="AI" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://bsjkmoravec.github.io">
+  <img class="avatar" src="https://bsjkmoravec.github.io/images/avatar.png?v=1719042420716" alt="">
+  </a>
+  <h1 class="site-title">
+    Moravec&#39;s Musings
+  </h1>
+  <p class="site-description">
+    阴暗四斋的胡言乱语
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/bsjkmoravec" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              GPT-academic本地部署使用
+            </h2>
+            <div class="post-info">
+              <span>
+                2024-05-31
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+                <a href="https://bsjkmoravec.github.io/tag/wsdXB_4dg/" class="post-tag">
+                  # AI
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="部署过程">部署过程</h2>
+<ol>
+<li>部署用的是方法一, 没有使用<code>docker</code>或者一键安装脚本.<br>
+<a href="https://github.com/binary-husky/gpt_academic?tab=readme-ov-file#%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95i%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C-windows-linux-or-macos">官方三类安装方法</a></li>
+<li>使用的API key是由第三方:<a href="https://aihubmix.com/">aihubmix</a>提供的, 而并不是OpenAI官方API, 以免封号的可能性.</li>
+<li>使用的网络工具是clash, 如果网络工具不同需要修改配置文件里proxies相关内容.</li>
+<li>按照要求安装python的requirements. 此次部署使用的anaconda. 注意的点:
+<ul>
+<li>老是容易忘<code>cd</code>进gpt_academic的目录下创建conda环境</li>
+<li>必须使用<code>anaconda prompt</code>, 因为这里能保证conda的python解释器优先级最高.</li>
+</ul>
+</li>
+<li>按照推荐, 在目录路径下创建了<code>config_private.py</code>文件. 这样更新的时候无所谓怎么倒腾, 配置都是在的.</li>
+<li>创建完<code>config_private.py</code>文件、安装完必要依赖后, 运行<code>python main.py</code>即可.<br>
+<br/></li>
+</ol>
+<h2 id="参考配置">参考配置</h2>
+<p>以下是创建的<code>config_private.py</code>配置文件</p>
+<pre><code class="language-python">	  API_KEY = &quot;sk-**(中转API key)&quot;
+	  
+	  USE_PROXY = True
+	  
+	  if USE_PROXY:
+	      proxies = {
+	          &quot;http&quot;:  &quot;http://127.0.0.1:7890&quot;,
+	          &quot;https&quot;: &quot;http://127.0.0.1:7890&quot;,
+	      }
+	  else:
+	      proxies = None
+	  
+	  LLM_MODEL = &quot;gpt-4o&quot;
+	  
+	  API_URL_REDIRECT = {&quot;https://api.openai.com/v1/chat/completions&quot;: &quot;https://aihubmix.com/v1/chat/completions&quot;}
+	  
+	  DEFAULT_WORKER_NUM = 30
+</code></pre>
+<h2 id="后续运行">后续运行</h2>
+<p>使用 <code>anaconda prompt</code>并切换到gpt_academic对应的<code>python</code>运行环境后 <code>python main.py</code>即可</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E9%83%A8%E7%BD%B2%E8%BF%87%E7%A8%8B">部署过程</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E9%85%8D%E7%BD%AE">参考配置</a></li>
+<li><a href="#%E5%90%8E%E7%BB%AD%E8%BF%90%E8%A1%8C">后续运行</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://bsjkmoravec.github.io/post/theres-no-audience/">
+              <h3 class="post-title">
+                &#34;There&#39;s no audience&#34;
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by  <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://bsjkmoravec.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
